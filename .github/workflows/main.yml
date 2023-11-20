@@ -8,6 +8,11 @@ on:
         required: true
         default: 'main'
 
+      release:
+        description: 'enter the release'
+        required: true
+        default: 'Head'
+
 jobs:
   revert_commit:
     runs-on: ubuntu-latest
@@ -27,4 +32,4 @@ jobs:
 
       - name: print the hash
         run: |
-          git show-ref --tags -s 1.0.0
+          git show-ref --tags -s ${{ github.event.inputs.release }}
