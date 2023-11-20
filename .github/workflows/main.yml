@@ -17,9 +17,14 @@ jobs:
         with:
            ref: ${{ github.event.inputs.branch }}
            fetch-depth: 0
-      - name: Revert pushed commit
+      #- name: Revert pushed commit
+        #run: |
+          #git config --global user.name 'github-actions[bot]'
+          #git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          #git revert --no-edit HEAD
+          #git push
+
+
+      - name: print the hash
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git revert --no-edit HEAD
-          git push
+          git show-ref --tags -s 1.0.0
