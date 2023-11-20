@@ -1,23 +1,25 @@
-name: Print Commit Hash for Release
+name: Revert pushed commit
 
-on:
+on: 
   workflow_dispatch:
     inputs:
-      release_tag:
-        description: 'Release tag'
+      branch:
+        description: 'Branch name'
         required: true
+        default: 'main'
 
 jobs:
-  print-commit-hash:
+  revert_commit:
     runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Get commit hash
-      id: commit_hash
-      run: echo "::set-output name=hash::$(git rev-parse ${{ github.sha }})"
-
-    - name: Print commit hash
-      run: echo "Commit Hash for Release ${{ github.event.inputs.release_tag }}: ${{ steps.commit_hash.outputs.hash }}"
+    steps: 
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+           ref: ${{ github.event.inputs.branch }}
+           fetch-depth: 0
+      - name: Revert pushed commit
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git revert --no-edit HEAD
+          git push
