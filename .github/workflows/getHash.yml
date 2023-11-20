@@ -1,0 +1,23 @@
+name: Print Commit Hash for Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag'
+        required: true
+
+jobs:
+  print-commit-hash:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get commit hash
+      id: commit_hash
+      run: echo "::set-output name=hash::$(git rev-parse ${{ github.sha }})"
+
+    - name: Print commit hash
+      run: echo "Commit Hash for Release ${{ github.event.inputs.release_tag }}: ${{ steps.commit_hash.outputs.hash }}"
