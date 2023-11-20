@@ -33,3 +33,4 @@ jobs:
       - name: print the hash
         run: |
           git show-ref --tags -s ${{ github.event.inputs.release }}
+          echo "release-hash=${{ git show-ref --tags -s ${{ github.event.inputs.release }} }}" >> $GITHUB_OUTPUT
