@@ -22,12 +22,6 @@ jobs:
         with:
            ref: ${{ github.event.inputs.branch }}
            fetch-depth: 0
-      #- name: Revert pushed commit
-        #run: |
-          #git config --global user.name 'github-actions[bot]'
-          #git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          #git revert --no-edit HEAD
-          #git push
 
 
       - name: get the release hash
@@ -35,8 +29,13 @@ jobs:
         run: |
           hash=$(git show-ref --tags -s ${{ github.event.inputs.release }})
           echo "release-hash=$hash" >> $GITHUB_OUTPUT
-
-
-      - name: get the release hash
+      
+      
+      
+      - name: Revert pushed commit
         run: |
-          echo ${{ steps.out-hash.outputs.release-hash }}
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git revert --no-edit ${{ steps.out-hash.outputs.release-hash }}
+          git push
+
