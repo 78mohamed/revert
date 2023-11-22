@@ -34,7 +34,9 @@ jobs:
       
       - name: Revert pushed commit
         run: |
+          git rev-parse HEAD
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git revert --no-edit ${{ steps.out-hash.outputs.release-hash }}
+          #git reset --hard ${{ steps.out-hash.outputs.release-hash }}
+          git revert --no-edit HEAD^..${{ steps.out-hash.outputs.release-hash }}
           git push
